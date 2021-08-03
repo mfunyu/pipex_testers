@@ -1,9 +1,11 @@
 #!/bin/bash
 
+PIPEX=../pipex
+
 # set file names
-INFILE=/dev/stdin
-OUTFILE1=/dev/stdout
-OUTFILE2=/dev/stdout
+INFILE=infile
+OUTFILE1=outfile1
+OUTFILE2=outfile2
 
 # clean
 rm -f  $INFILE $OUTFILE1 $OUTFILE2 2> /dev/null
@@ -36,8 +38,8 @@ python3 -c "import this" > $INFILE
 #ACTUAL OUTPUT ----------------------------------
 printf "${THICK}ACTUAL OUTPUT${RESET}\n"
 
-printf "${PROMPT} ./pipex  ${INFILE} \"${1}\" \"${2}\" ${OUTFILE2}\n"
-./pipex  $INFILE "$1" "$2" $OUTFILE2
+printf "${PROMPT} ${PIPEX}  ${INFILE} \"${1}\" \"${2}\" ${OUTFILE2}\n"
+$PIPEX $INFILE "$1" "$2" $OUTFILE2
 
 printf "${PROMPT} cat ${OUTFILE2}\n"
 cat $OUTFILE2
