@@ -2,6 +2,8 @@
 
 # execution in bash is preffered
 
+PIPEX=../pipex
+
 # filenames
 EX_IN="expected_in"
 EX_OUT="expected_out"
@@ -30,7 +32,7 @@ function tester () {
 	cp $EX_IN $AC_IN
 	# execute
 	< $EX_IN $1 | $2 > $EX_OUT
-	./pipex $AC_IN "$1" "$2" $AC_OUT
+	$PIPEX $AC_IN "$1" "$2" $AC_OUT
 
 	# write in log file
 	printf "====== cmd1='${1}' cmd2='${2}' ======\n" >> $LOG
@@ -62,7 +64,7 @@ function tester () {
 function err_tester () {
 	printf "\033[36m[ ${1} ]\033[m "
 	2> $EX_LOG < $EX_IN $2 | 2> $EX_LOG $3 > $EX_OUT
-	2> $AC_LOG ./pipex $AC_IN "$2" "$3" $AC_OUT
+	2> $AC_LOG $PIPEX $AC_IN "$2" "$3" $AC_OUT
 
 	# write in log file
 	printf "======= ${1} =======\n" >> $LOG
@@ -111,9 +113,9 @@ echo "==="
 printf "Detailed Tests\n"
 
 ## successes
-err_tester "executable run" "echo" "./pipex test_tester.sh cat wc outfile"
-err_tester "executable success" "./pipex a b c d" "echo"
-err_tester "executable success2" "cat" "./pipex a b c d"
+err_tester "executable run" "echo" "${PIPEX} test_tester.sh cat wc outfile"
+err_tester "executable success" "${PIPEX} a b c d" "echo"
+err_tester "executable success2" "cat" "${PIPEX} a b c d"
 
 cat test_tester.sh > $EX_OUT
 cp $EX_OUT $AC_OUT
@@ -124,8 +126,8 @@ echo "---"
 ## errors
 err_tester "fail both" "ls l" "m"
 err_tester "fail both" "l" "m"
-err_tester "executable fail" "pipex a b c d" "echo"
-err_tester "executable fail2" "echo" "pipex a b c d"
+err_tester "executable fail" "${PIPEX} a b c d" "echo"
+err_tester "executable fail2" "echo" "${PIPEX} a b c d"
 
 
 echo "==="
@@ -142,8 +144,8 @@ EX_IN=dir
 AC_IN=dir
 err_tester "Dir ls" "ls" "wc"
 
-EX_IN=pipex
-AC_IN=pipex
+EX_IN=$PIPEX
+AC_IN=$PIPEX
 err_tester "Bin file" "cat" "grep a"
 
 err_tester "usage err cmd1" "ls --illegaloption" "wc"
