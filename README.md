@@ -1,5 +1,13 @@
 # pipex_testers
 
+## installation
+```
+git clone https://github.com/mfunyu/tester_pipex
+```
+```
+└  pipex/ (review directory)
+    └  get_next_line_runtest/
+```
 
 ## test_tester
 
